@@ -1,0 +1,6 @@
+{
+  "name": "Mi Presupuesto Mensual",
+  "description": "Dashboard financiero personal para controlar gastos diarios en pesos colombianos (COP), visualizar el saldo disponible mensual y recibir notificaciones inteligentes.",
+  "requestFramePermissions": ["microphone", "camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

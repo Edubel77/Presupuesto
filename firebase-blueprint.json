@@ -1,0 +1,148 @@
+{
+  "entities": {
+    "BudgetConfig": {
+      "title": "BudgetConfig",
+      "description": "Configuración privada del presupuesto mensual para la cuenta de un usuario.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "UID del usuario propietario en Firebase Authentication.",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Nombre del usuario para personalizar el asistente.",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "monthlyBudget": {
+          "type": "number",
+          "description": "Presupuesto mensual base en pesos colombianos (COP)."
+        },
+        "onboardingCompleted": {
+          "type": "boolean",
+          "description": "Indica si el usuario ya definió su presupuesto inicial."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Marca temporal del servidor al crear la configuración."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Marca temporal del servidor de la última actualización."
+        }
+      },
+      "required": [
+        "uid",
+        "displayName",
+        "monthlyBudget",
+        "onboardingCompleted",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "Movement": {
+      "title": "Movement",
+      "description": "Movimiento financiero individual (gasto o ingreso) perteneciente a una cuenta de usuario.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "UID del usuario propietario del movimiento.",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["expense", "income"],
+          "description": "Tipo de movimiento financiero."
+        },
+        "day": {
+          "type": "number",
+          "description": "Día del mes (1 a 31)."
+        },
+        "dateISO": {
+          "type": "string",
+          "description": "Fecha en formato YYYY-MM-DD.",
+          "minLength": 10,
+          "maxLength": 10,
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "dateLabel": {
+          "type": "string",
+          "description": "Etiqueta legible de la fecha en español.",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "description": {
+          "type": "string",
+          "description": "Descripción del gasto o ingreso.",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "category": {
+          "type": "string",
+          "description": "Categoría del movimiento.",
+          "minLength": 1,
+          "maxLength": 60
+        },
+        "amount": {
+          "type": "number",
+          "description": "Monto en pesos colombianos (COP), mayor a cero."
+        },
+        "paymentMethod": {
+          "type": "string",
+          "description": "Medio de pago utilizado (opcional).",
+          "maxLength": 40
+        },
+        "notes": {
+          "type": "string",
+          "description": "Observaciones opcionales.",
+          "maxLength": 500
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Marca temporal del servidor al crear el movimiento."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Marca temporal del servidor de la última actualización."
+        }
+      },
+      "required": [
+        "uid",
+        "type",
+        "day",
+        "dateISO",
+        "dateLabel",
+        "description",
+        "category",
+        "amount",
+        "createdAt",
+        "updatedAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/users/{userId}/budget/{configId}": {
+      "schema": {
+        "$ref": "#/entities/BudgetConfig"
+      },
+      "description": "Documento privado de configuración y presupuesto mensual por usuario (configId = 'config')."
+    },
+    "/users/{userId}/movements/{movementId}": {
+      "schema": {
+        "$ref": "#/entities/Movement"
+      },
+      "description": "Colección privada de gastos e ingresos registrados por el usuario."
+    }
+  }
+}
